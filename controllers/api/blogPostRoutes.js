@@ -7,6 +7,7 @@ router.post('/', withAuth, async (req, res) => {
         const newBlog = await Blog.create({
             ...req.body,
             user_id: req.session.user_id,
+            comment: req.session.comment_title
         });
 
         res.status(200).json(newBlog);
@@ -25,7 +26,7 @@ router.delete('/:id', withAuth, async (req, res) => {
         });
 
         if (!blogData) {
-            res.status(404).json({ message: 'No project found with this id!' });
+            res.status(404).json({ message: 'No Blog found with this id!' });
             return;
         }
 

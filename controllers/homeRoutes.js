@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { Blog, User } = require('../models');
+const { Blog, User, Comment } = require('../models');
 const withAuth = require('../utils/auth');
 
 router.get('/', async (req, res) => {
@@ -9,13 +9,13 @@ router.get('/', async (req, res) => {
             include: [
                 {
                     model: User,
-                    attributes: ['name'],
+                    attributes: ['title'],
                 },
             ],
         });
 
         // Serialize data so the template can read it
-        const Blog = blogData.map((blog) => blog.get({ plain: true }));
+        const blog = blogData.map((blog) => blog.get({ plain: true }));
 
         // Pass serialized data and session flag into template
         res.render('homepage', {
@@ -27,20 +27,20 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/blogPost/:id', async (req, res) => {
+router.get('/blog/', async (req, res) => {
     try {
-        const blogData = await Blog.findByPk(req.params.id, {
+        const blogData = await blog.findByPk(req.params.id, {
             include: [
                 {
                     model: User,
-                    attributes: ['name'],
+                    attributes: ['title'],
                 },
             ],
         });
 
-        const Blog = blogData.get({ plain: true });
+        const blog = blogData.get({ plain: true });
 
-        res.render('project', {
+        res.render('blog', {
             ...blog,
             logged_in: req.session.logged_in
         });
@@ -55,7 +55,7 @@ router.get('/blogPost', withAuth, async (req, res) => {
         // Find the logged in user based on the session ID
         const userData = await User.findByPk(req.session.user_id, {
             attributes: { exclude: ['password'] },
-            include: [{ model: Project }],
+            include: [{ model: Blog }],
         });
 
         const user = userData.get({ plain: true });
@@ -63,6 +63,32 @@ router.get('/blogPost', withAuth, async (req, res) => {
         res.render('profile', {
             ...user,
             logged_in: true
+        });
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
+router.get('comment', async (req, res) => {
+    try {
+        const commentData = await comment.findByPk(req.params.id, {
+            include: [
+                {
+                    model: User,
+                    attributes: ['title'],
+                },
+                {
+                    model: Comment,
+                    attributes: ['title'],
+                }
+            ],
+        });
+
+        const comment = commentData.get({ plain: true });
+
+        res.render('comment', {
+            ...comment,
+            logged_in: req.session.logged_in
         });
     } catch (err) {
         res.status(500).json(err);
