@@ -23,20 +23,6 @@ Blog.init(
             allowNull: false,
             defaultValue: DataTypes.NOW,
         },
-        comment: {
-            type: DataTypes.INTEGER,
-            references: {
-                model: 'comment',
-                key: 'id',
-            }
-        },
-        user_id: {
-            type: DataTypes.INTEGER,
-            references: {
-                model: 'user',
-                key: 'id',
-            },
-        },
     },
     {
         sequelize,
