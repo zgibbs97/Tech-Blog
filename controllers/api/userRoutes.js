@@ -3,14 +3,14 @@ const { User } = require('../../models');
 
 router.post("/", (req, res) => {
     User.create({
-        title: req.body.title,
+        name: req.body.name,
         email: req.body.email,
         password: req.body.password
     })
         .then(dbUserData => {
             req.session.save(() => {
                 req.session.userId = dbUserData.id;
-                req.session.title = dbUserData.title;
+                req.session.name = dbUserData.name;
                 req.session.loggedIn = true;
 
                 res.json(dbUserData);
