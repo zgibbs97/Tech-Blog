@@ -1,20 +1,13 @@
-<div class="mb-5 pt-3">
-    <a href="/dashboard/create/"><button id="create-blog" class="button is-primary is-pulled-right">create
-            post</button></a>
+{{#if blogs.length}}
+<section>
+    <h2>Your Posts</h2>
+    {{#each blogs as |blog|}}
+    {{> dashboard-postinfo blog}}
+    {{/each}}
 
-    <h2 class="title pb-4">dashboard: your posts</h2>
-    <hr>
-    {{#if blogs.length}}
-</div>
-
-{{#each blogs as |blog|}}
-{{> blog-description blog}}
-
-<a href="/dashboard/edit/{{blog.id}}"><button class="button mb-5 ml-5 is-warning">edit post</button></a>
-</div>
-{{/each}}
-
-{{else}}
-<h6 class="pb-4 has-text-centered is-italic">you do not currently have any posts</h6>
-
+</section>
 {{/if}}
+
+<button type="submit" class="btn"><a class="link" href="/dashboard/new">+ New Post</a></button>
+
+<script src="/public/js/add-blog.js"></script>

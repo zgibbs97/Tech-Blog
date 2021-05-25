@@ -1,7 +1,7 @@
 async function commentFormHandler(event) {
     event.preventDefault();
 
-    const comment_text = document.querySelector('textarea[name="comment-body"]').value.trim();
+    const comment_title = document.querySelector('input[name="comment-title"]').value.trim();
 
     const blog_id = window.location.toString().split('/')[
         window.location.toString().split('/').length - 1
@@ -12,7 +12,7 @@ async function commentFormHandler(event) {
             method: 'POST',
             body: JSON.stringify({
                 blog_id,
-                comment_text
+                comment_title
             }),
             headers: {
                 'Content-Type': 'application/json'
@@ -21,8 +21,10 @@ async function commentFormHandler(event) {
 
         if (response.ok) {
             document.location.reload();
+
         } else {
             alert(response.statusText);
+            document.querySelector('#comment-form').style.display = "block";
         }
     }
 }
