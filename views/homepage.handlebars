@@ -1,24 +1,8 @@
-<!-- Loop over each object in the projects array -->
-{{#each blogs as |blog| }}
-<div class="row mb-4 project">
-  <div class="col-md-5">
-    <h2>
-      <!-- Call helper function with triple brackets to render the emoji span as HTML -->
-      {{{blogPost}}}
-      <a href="/blog/{{blog.id}}">{{blog.title}}</a>
-    </h2>
-    <p>
-      <span for="img" aria-label="money">💲</span>
-      <!-- Pass needed_funding value to the helper function -->
-      <span class="Description">{{blog.description}}</span>
+{{#each blogs as |blog|}}
 
-    </p>
-    <p>Created by {{blog.user.name}} on {{format_date blog.date_created}}</p>
-  </div>
-  <div class="col-md-7">
-    <p>
-      {{blog.comment}}
-    </p>
-  </div>
+{{> blog-description blog }}
 </div>
+
+{{else}}
+<h6 class="pb-4 has-text-centered is-italic">there are currently no posts</h6>
 {{/each}}
